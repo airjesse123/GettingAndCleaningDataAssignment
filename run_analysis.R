@@ -1,4 +1,4 @@
-# get the data.table library
+get the data.table library
 library(data.table)
 library(dplyr)
 
