@@ -1,4 +1,4 @@
-get the data.table library
+#get the data.table library
 library(data.table)
 library(dplyr)
 
@@ -79,4 +79,4 @@ tidyData = aggregate(allData, by=list(Subject=allData$Subject,ActivityName = all
 tidyData[,84]=NULL
 tidyData[,83]=NULL
 tidyData[,3]=NULL
-write.table(tidyData, "tidyData.txt", sep="|")
+write.table(tidyData, "tidyData.txt", sep="|",row.name=FALSE)
