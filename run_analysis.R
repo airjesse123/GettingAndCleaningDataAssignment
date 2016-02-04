@@ -22,6 +22,16 @@ testData<-data.table(testTable)
 #get test features and crop down to just mean and std
 featuresPath <- file.path(filepath,"features.txt")
 featuresTable <- read.table(featuresPath)
+featuresTable[,2]<-sub("^t","Time of ",featuresTable[,2])
+featuresTable[,2]<-sub("^f","Frequency of ",featuresTable[,2])
+featuresTable[,2]<-sub("BodyBody","Body x Body ",featuresTable[,2])
+featuresTable[,2]<-sub("Body","Body ",featuresTable[,2])
+featuresTable[,2]<-sub("Gravity","Gravity ",featuresTable[,2])
+featuresTable[,2]<-sub("Gyro","by Gyroscope ",featuresTable[,2])
+featuresTable[,2]<-sub("Acc","by Accelerometer ",featuresTable[,2])
+featuresTable[,2]<-sub("JerkMag","Jerk x Mag ",featuresTable[,2])
+featuresTable[,2]<-sub("Jerk","Mag ",featuresTable[,2])
+featuresTable[,2]<-sub("Mag","Jerk ",featuresTable[,2])
 featuresLogical <- grepl("mean|std", featuresTable$V2)
 names(testXTable)=featuresTable$V2
 testXTableNew<-testXTable[,featuresLogical]
@@ -54,6 +64,16 @@ trainData<-data.table(trainTable)
 #get train features and crop down to just mean and std
 featuresPath <- file.path(filepath,"features.txt")
 featuresTable <- read.table(featuresPath)
+featuresTable[,2]<-sub("^t","Time of ",featuresTable[,2])
+featuresTable[,2]<-sub("^f","Frequency of ",featuresTable[,2])
+featuresTable[,2]<-sub("BodyBody","Body x Body ",featuresTable[,2])
+featuresTable[,2]<-sub("Body","Body ",featuresTable[,2])
+featuresTable[,2]<-sub("Gravity","Gravity ",featuresTable[,2])
+featuresTable[,2]<-sub("Gyro","by Gyroscope ",featuresTable[,2])
+featuresTable[,2]<-sub("Acc","by Accelerometer ",featuresTable[,2])
+featuresTable[,2]<-sub("JerkMag","Jerk x Mag ",featuresTable[,2])
+featuresTable[,2]<-sub("Jerk","Mag ",featuresTable[,2])
+featuresTable[,2]<-sub("Mag","Jerk ",featuresTable[,2])
 featuresLogical <- grepl("mean|std", featuresTable$V2)
 names(trainXTable)=featuresTable$V2
 trainXTableNew<-trainXTable[,featuresLogical]
@@ -75,8 +95,9 @@ allTrain<-cbind(trainData,trainXData,trainYData)
 allData<-rbind(allTest,allTrain)
 
 #query the tidy data ussing aggregate
-tidyData = aggregate(allData, by=list(Subject=allData$Subject,ActivityName = allData$ActivityName), mean)
+tidyData = aggregate(allData, by=list(ActivityName = allData$ActivityName,Subject=allData$Subject), mean)
 tidyData[,84]=NULL
 tidyData[,83]=NULL
 tidyData[,3]=NULL
+tidyData<-tidyData[,c(c(2,1),seq(from=3,to=81))] #Rearrange first two cols
 write.table(tidyData, "tidyData.txt", sep="|",row.name=FALSE)
